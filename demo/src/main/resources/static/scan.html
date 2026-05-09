@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Scan QR for Attendance</title>
+<script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+
+<body>
+
+<h2>Scan Student QR Code</h2>
+
+<div id="reader" style="width:300px"></div>
+
+<p id="result"></p>
+
+<script>
+
+let html5QrcodeScanner;
+
+function onScanSuccess(decodedText, decodedResult) {
+
+document.getElementById("result").innerHTML = "Student ID: " + decodedText;
+
+fetch("http://localhost:8080/attendance",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+studentId: decodedText
+})
+})
+.then(res => res.text())
+.then(message => {
+
+alert(message);
+
+// STOP SCANNING AFTER SUCCESS
+html5QrcodeScanner.clear();
+
+});
+
+}
+
+// QR Scanner Start
+html5QrcodeScanner = new Html5QrcodeScanner(
+"reader",
+{ fps: 10, qrbox: 250 }
+);
+
+html5QrcodeScanner.render(onScanSuccess);
+
+</script>
+
+</body>
+</html>

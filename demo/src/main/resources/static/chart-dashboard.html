@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Attendance Chart Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<h2>Attendance Chart Dashboard</h2>
+
+Enter Student ID:
+<input type="number" id="studentId">
+
+<button onclick="loadChart()">Show Chart</button>
+
+<br><br>
+
+<canvas id="attendanceChart"></canvas>
+
+<script>
+
+function loadChart(){
+
+let id = document.getElementById("studentId").value;
+
+fetch("http://localhost:8080/attendance/stats/" + id)
+.then(res => res.json())
+.then(data => {
+
+let present = data.present;
+let absent = data.absent;
+
+new Chart(document.getElementById("attendanceChart"),{
+
+type:'pie',
+
+data:{
+labels:['Present','Absent'],
+datasets:[{
+data:[present,absent],
+backgroundColor:['green','red']
+}]
+}
+
+});
+
+});
+
+}
+
+</script>
+
+</body>
+
+</html>

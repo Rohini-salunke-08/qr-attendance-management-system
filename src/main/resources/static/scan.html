@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Scan QR for Attendance</title>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+    background: linear-gradient(to right, #dfe9f3, #ffffff);
+}
+
+h2{
+    margin-top:20px;
+}
+
+#reader{
+    width:300px;
+    margin:auto;
+}
+
+#result{
+    margin-top:20px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+select{
+    padding:8px;
+    margin-bottom:15px;
+    border-radius:5px;
+}
+
+button{
+    margin-top:20px;
+    padding:10px 20px;
+    background:#3498db;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#2980b9;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>Scan Student QR Code</h2>
+
+<!-- ✅ Lecture Selection -->
+<select id="lectureNo">
+    <option value="1">Lecture 1</option>
+    <option value="2">Lecture 2</option>
+    <option value="3">Lecture 3</option>
+    <option value="4">Lecture 4</option>
+</select>
+
+<div id="reader"></div>
+
+<p id="result"></p>
+
+<button onclick="restartScanner()">Restart Scanner</button>
+
+<script>
+
+let html5QrcodeScanner;
+let scanned = false; // 🔥 prevent multiple scans
+
+// ✅ When QR is scanned
+function onScanSuccess(decodedText, decodedResult) {
+
+    // 🔥 STOP multiple scans instantly
+    if(scanned) return;
+    scanned = true;
+
+    let lecture = document.getElementById("lectureNo").value;
+
+    document.getElementById("result").innerHTML =
+        "Student ID: " + decodedText + " | Lecture: " + lecture;
+
+    // ✅ CALL BACKEND (CORRECT API)
+    fetch("http://localhost:8080/attendance/mark", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            studentId: decodedText,
+            lectureNo: parseInt(lecture)   // 🔥 ensure number
+        })
+    })
+    .then(res => res.text())
+    .then(message => {
+
+        alert(message);
+
+        // ✅ STOP scanner
+        html5QrcodeScanner.clear();
+
+        // ✅ Redirect to dashboard
+        setTimeout(() => {
+            window.location.href = "dashboard.html";
+        }, 1000);
+
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error marking attendance");
+        scanned = false; // allow retry if error
+    });
+
+}
+
+// ✅ Start scanner
+function startScanner(){
+
+    html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader",
+        { fps: 10, qrbox: 250 }
+    );
+
+    html5QrcodeScanner.render(onScanSuccess);
+}
+
+// ✅ Restart scanner
+function restartScanner(){
+    scanned = false;
+    document.getElementById("result").innerHTML = "";
+    startScanner();
+}
+
+// start on load
+startScanner();
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Admin Login</title>
+
+</head>
+
+<body>
+
+<h2>Admin Login</h2>
+
+<label>Username:</label>
+<input type="text" id="username">
+
+<br><br>
+
+<label>Password:</label>
+<input type="password" id="password">
+
+<br><br>
+
+<button onclick="login()">Login</button>
+
+<p id="msg"></p>
+
+<script>
+
+function login(){
+
+let user = document.getElementById("username").value;
+let pass = document.getElementById("password").value;
+
+if(user === "admin" && pass === "1234"){
+
+window.location.href="dashboard.html";
+
+}else{
+
+document.getElementById("msg").innerHTML="Invalid Login";
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>

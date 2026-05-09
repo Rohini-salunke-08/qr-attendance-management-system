@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student List</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Student List</h2>
+
+<table border="1">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Course</th>
+<th>QR Code</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="studentTable"></tbody>
+
+</table>
+
+<br>
+
+<a href="addstudent.html">Add New Student</a>
+<br>
+<a href="scan.html">Scan Attendance</a>
+<br>
+<a href="http://localhost:8080/attendance/export">
+<button>Download Attendance Excel</button>
+</a>
+
+<!-- QR Code Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<!-- Your JavaScript -->
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Date-wise Attendance Report</title>
+</head>
+
+<body>
+
+<h2>Attendance Report</h2>
+
+Start Date:
+<input type="date" id="startDate">
+
+End Date:
+<input type="date" id="endDate">
+
+<button onclick="loadReport()">Get Report</button>
+
+<br><br>
+
+<table border="1">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Student ID</th>
+<th>Date</th>
+</tr>
+</thead>
+
+<tbody id="reportTable"></tbody>
+
+</table>
+
+<script>
+
+function loadReport(){
+
+let start = document.getElementById("startDate").value;
+let end = document.getElementById("endDate").value;
+
+fetch(`http://localhost:8080/attendance/report?startDate=${start}&endDate=${end}`)
+.then(res => res.json())
+.then(data => {
+
+let table="";
+
+data.forEach(a=>{
+
+table += `
+<tr>
+<td>${a.id}</td>
+<td>${a.studentId}</td>
+<td>${a.date}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("reportTable").innerHTML = table;
+
+});
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -19,4 +19,6 @@ A web application to automate attendance using QR codes.
 3. Run the application
 
 ## 📸 Screenshots
-(Add images here)
+(<img width="1363" height="663" alt="Login page" src="https://github.com/user-attachments/assets/b3b25400-4732-434e-b233-14d866b008ca" />)
+<img width="1366" height="636" alt="Dashboard" src="https://github.com/user-attachments/assets/0759cd89-aec3-416b-a1e8-9384c445ca7c" />
+
